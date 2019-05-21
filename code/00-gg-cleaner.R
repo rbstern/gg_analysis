@@ -49,38 +49,12 @@ labels_clean <- labels %>%
   mutate(player_alias_fct  = as.factor(player_alias),
          hy           = hy %>% as.numeric %% 4,
          hy           = ifelse(is.na(hy), 0, hy),
-         escol        = rm_accent(escol),
-         escolaridade = 1+grepl("high", escol)+
-                        2*grepl("university", escol),
-         moca_abs     = moca_abstracao,
-         moca_ate     = moca_atencao,
-         moca_evoc    = moca_evoc_tardia,
-         moca_lin     = moca_linguagem,
-         moca_nom     = moca_nomeacao,
-         moca_ori     = moca_orientacao,
-         moca_vis     = moca_visuoesp_exec,
-         moca_tot     = moca_total,
-         best_lim     = as.numeric(best_lim_estab_vert),
-         best_marcha  = as.numeric(best_estab_marcha),
-         best_orient  = best_orient_sens,
-         best_reat    = best_reat,
-         best_rest    = as.numeric(best_rest_biom),
-         best_trans   = as.numeric(best_trans_antec),
-         best_tot     = as.numeric(best),
-         updrs_post   = as.numeric(est_post_updrs_iii),
-         updrs_rig    = as.numeric(rigidez_updrs_iii),
-         updrs_trem   = as.numeric(tremor_updrs_iii),
-         updrs_tot    = as.numeric(updrs_iii)) %>%
-  select(playeralias, idade, sexo, hy, escolaridade,
-         moca_abs, moca_ate, moca_evoc, moca_lin, moca_nom, moca_ori, moca_vis, moca_tot,
-         best_lim, best_marcha, best_orient, best_reat, best_rest, best_trans, best_tot,
-         updrs_post, updrs_rig, updrs_trem, updrs_tot)
+         escolaridade = 1 + grepl("high", escolaridade) +
+                        2*grepl("university", escolaridade)
+  ) %>% 
+  select(player_alias, player_alias_fct, hy, escolaridade, moca_total)
 
-table_hy <- labels_clean$hy %>% 
-  table()
-table_hy[-1] %>% sum()
-
-data <- inner_join(data, labels_clean, by="playeralias")
+data <- inner_join(data, labels_clean, by="player_alias")
 write.csv(data, "./data/amparo/data.csv")
 #nao rodar por sigilo do DB
 #saveRDS(data, "../data/amparo/data.rds")
