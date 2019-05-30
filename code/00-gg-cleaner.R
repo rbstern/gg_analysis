@@ -9,7 +9,7 @@ rm_accent_from_names <- function(dt)
   invisible(dt)
 }
 
-data <- read_csv("./data-raw/amparo/amparo.csv") %>%
+data <- read_csv("./data-raw/amparo.csv") %>%
   as.tibble() %>%
   rm_accent_from_names() %>%
   clean_names()
@@ -40,7 +40,7 @@ data %<>%
   ) %>%
   arrange(id_alias_fct, move)
 
-labels <- read_csv("./data-raw/amparo/labels.csv") %>%
+labels <- read_csv("./data-raw/labels.csv") %>%
   rm_accent_from_names() %>%
   clean_names() %>%
   inner_join(players, by="player_alias")
@@ -55,6 +55,4 @@ labels_clean <- labels %>%
   select(player_alias, player_alias_fct, hy, escolaridade, moca_total)
 
 data <- inner_join(data, labels_clean, by="player_alias")
-write.csv(data, "./data/amparo/data.csv")
-#nao rodar por sigilo do DB
-#saveRDS(data, "../data/amparo/data.rds")
+write_rds(data, "./data/data.rds")
